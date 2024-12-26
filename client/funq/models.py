@@ -209,7 +209,7 @@ class Object(metaclass=WidgetMetaClass):
             return True
         return wait_for(check_props, timeout, timeout_interval)
 
-    def call_slot(self, slot_name, params={}):
+    def call_slot(self, slot_name, params=None):
         """
         **CAUTION**; This methods allows to call a slot (written on the tested
         application). The slot must take a QVariant and returns a QVariant.
@@ -226,7 +226,7 @@ class Object(metaclass=WidgetMetaClass):
         return self.client.send_command(
             'call_slot',
             slot_name=slot_name,
-            params=params,
+            params={} if params is None else params,
             oid=self.oid
         )['result_slot']
 
@@ -493,8 +493,7 @@ class ModelItems(TreeItems, item_class=ModelItem):
         items = self.row_by_named_path(named_path,
                                        match_column=match_column,
                                        sep=sep)
-        if items:
-            return items[column]
+        return items[column] if items else None
 
     def row_by_named_path(self, named_path, match_column=0, sep='/'):
         """
@@ -534,8 +533,7 @@ class ModelItems(TreeItems, item_class=ModelItem):
                         row = [it for it in item.items
                                if it.row == item_.row]
                         return sorted(row, key=lambda it: it.column)
-                    else:
-                        next_item = item_
+                    next_item = item_
             item = next_item
         return None
 
@@ -649,12 +647,14 @@ class AbstractItemView(Widget, cpp_class='QAbstractItemView'):
         if editor_class_name:
             return self.client.widget(path=self.path
                                       + qt_path + editor_class_name)
+
         for editor_class_name in self.editor_class_names:
             try:
                 return self.client.widget(path=self.path
                                           + qt_path + editor_class_name)
             except FunqError:
                 pass
+
         raise FunqError("MissingEditor", 'Unable to find an editor.'
                         f' Possible editors: {repr(self.editor_class_names)}')
 
@@ -1005,7 +1005,7 @@ class QuickWindow(Widget, cpp_class="QQuickWindow"):
                 raise TypeError(f"alias {path} does not belong to this quick window")
             # remove the window path here, c++ code only requires the
             # object path from the root item.
-            path = path[len(self.path)+2:]
+            path = path[len(self.path) + 2:]
 
         data = self.client.send_command(
             'quick_item_find',

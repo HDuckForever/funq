@@ -130,7 +130,7 @@ class FunqClient():
         """
         kwargs['action'] = action
         rawdata = json.dumps(kwargs).encode('utf-8')
-        header = '{}\n'.format(len(rawdata)).encode('utf-8')
+        header = f'{len(rawdata)}\n'.encode('utf-8')
         message = header + rawdata
         f = self._fsocket
         f.write(message)
@@ -328,7 +328,7 @@ class FunqClient():
         if isinstance(stream, str):
             stream = open(stream, 'wb')
         raw = base64.standard_b64decode(data['data'])
-        stream.write(raw)  # pylint: disable=E1103
+        stream.write(raw)
 
     def keyclick(self, text):
         """
@@ -481,8 +481,8 @@ class ApplicationContext():  # pylint: disable=R0903
                 pass
             if self._process.returncode is None:
                 # application seems blocked ! try to terminate it ...
-                LOG.warn(f"The tested application [{self._process.pid}]"
-                         " can not be stopped nicely.")
+                LOG.warning(f"The tested application [{self._process.pid}]"
+                            " can not be stopped nicely.")
                 self._process.terminate()
                 self._process.wait()
             self._process = None
