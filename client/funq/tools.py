@@ -78,31 +78,29 @@ def wait_for(func, timeout, timeout_interval=0.1):
 
 
 def is_exe(fpath):
-    """Returns True if fpath is an executable file"""
+    """
+    Returns True if fpath is an executable file
+    """
     return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-
-def _which(program):
-    """
-    Internal
-    """
-    if os.path.dirname(program):
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-    return None
 
 
 def which(program):
     """
     Try to find an executable given its name or path.
     """
-    if platform.system() == 'Windows':
+    def _which(program):
+        if os.path.dirname(program):
+            if is_exe(program):
+                return program
+        else:
+            for path in os.environ["PATH"].split(os.pathsep):
+                path = path.strip('"')
+                exe_file = os.path.join(path, program)
+                if is_exe(exe_file):
+                    return exe_file
+        return None
+
+    if platform.system() == 'Windows' and not program.endswith('.exe'):
         # try with exe suffix first
         pgm = _which(program + '.exe')
         if pgm:
