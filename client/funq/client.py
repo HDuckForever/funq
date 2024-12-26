@@ -187,20 +187,17 @@ class FunqClient():
         if alias:
             path = self.aliases[alias]
 
-        wdata = [None]
-
         def get_action():
             """ Try to get the action """
             try:
-                wdata[0] = self.send_command('widget_by_path', path=path)
-                return True
+                return True, self.send_command('widget_by_path', path=path)
             except FunqError as err:
                 if err.classname != 'InvalidWidgetPath':
                     raise
                 return err
-        wait_for(get_action, timeout, timeout_interval)
+        wdata = wait_for(get_action, timeout, timeout_interval)
 
-        action = Action(self, wdata[0])
+        action = Action(self, wdata)
         if wait_active:
             action.wait_for_properties({'enabled': True, 'visible': True})
         return action
@@ -230,22 +227,19 @@ class FunqClient():
         if alias:
             path = self.aliases[alias]
 
-        wdata = [None]
-
         def get_widget():
             """ Try to get the widget """
             try:
-                wdata[0] = self.send_command('widget_by_path', path=path)
-                return True
+                return True, self.send_command('widget_by_path', path=path)
             except FunqError as err:
                 if err.classname != 'InvalidWidgetPath':
                     raise
                 return err
-        wait_for(get_widget, timeout, timeout_interval)
+        wdata = wait_for(get_widget, timeout, timeout_interval)
 
-        widget = Widget(self, wdata[0])
+        widget = Widget(self, wdata)
         if wait_active:
-            if 'QWindow' in wdata[0]['classes']:
+            if 'QWindow' in wdata['classes']:
                 # QWindow (Qt5) does not have the enabled property
                 props = {'active': True, 'visible': True}
             else:
@@ -280,22 +274,20 @@ class FunqClient():
         :param wait_active: If true - the default -, wait until the widget
                             become visible and enabled.
         """
-        wdata = [None]
 
         def get_widget():
             """ Try to get the widget """
             try:
-                wdata[0] = self.send_command('active_widget', type=widget_type)
-                return True
+                return True, self.send_command('active_widget', type=widget_type)
             except FunqError as err:
                 if err.classname != 'NoActiveWindow':
                     raise
                 return err
-        wait_for(get_widget, timeout, timeout_interval)
+        wdata = wait_for(get_widget, timeout, timeout_interval)
 
-        widget = Widget(self, wdata[0])
+        widget = Widget(self, wdata)
         if wait_active:
-            if 'QWindow' in wdata[0]['classes']:
+            if 'QWindow' in wdata['classes']:
                 # QWindow (Qt5) does not have the enabled property
                 props = {'active': True, 'visible': True}
             else:

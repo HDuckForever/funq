@@ -69,6 +69,8 @@ def wait_for(func, timeout, timeout_interval=0.1):
         res = func()
         if res is True:
             return True
+        if isinstance(res, tuple) and res[0] is True:
+            return res[1]
         if time.monotonic() - time_start >= timeout:
             if isinstance(res, Exception):
                 raise res
