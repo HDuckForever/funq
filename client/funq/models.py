@@ -508,10 +508,10 @@ class ModelItems(TreeItems, item_class=ModelItem):
 
         Example::
 
-          model_items.row_by_named_path([u'TG/CBO/AP (AUT 1)',
-                                         u'Paramètres tranche',
-                                         u'TG',
-                                         u'DANGER'])
+          model_items.row_by_named_path(['TG/CBO/AP (AUT 1)',
+                                         'Paramètres tranche',
+                                         'TG',
+                                         'DANGER'])
 
         :param named_path: path for the interesting ModelIndex. May be
                            defined with a list of str or with a single str

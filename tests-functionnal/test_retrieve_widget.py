@@ -51,7 +51,7 @@ class TestRetrieve(AppTestCase):
         self.assertIsInstance(lbl, Widget)
         self.assertIsInstance(lbl.client, FunqClient)
         self.assertEqual(lbl.path, 'mainWindow::RetrieveWidget::QLabel')
-        self.assertEqual(lbl.classes, [u'QLabel', u'QFrame', u'QWidget', u'QObject'])
+        self.assertEqual(lbl.classes, ['QLabel', 'QFrame', 'QWidget', 'QObject'])
         self.assertTrue(lbl.oid)
 
     def test_widget_alias_unknow(self):
