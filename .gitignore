@@ -2,12 +2,14 @@
 *.egg-info
 build
 dist
+.qt
 
 Makefile
 moc_*.*
 ui_*.h
 *.moc
 *.o
+*.a
 *.so
 *.dll
 *.dylib
