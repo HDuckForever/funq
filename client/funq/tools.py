@@ -64,17 +64,16 @@ def wait_for(func, timeout, timeout_interval=0.1):
     :raises: TimeOutError on timeout or the exception returned by the callable.
     """
     timeout = apply_snooze_factor(timeout)
-    elapsed = 0.0
+    time_start = time.monotonic()
     while True:
         res = func()
         if res is True:
             return True
-        if elapsed >= timeout:
+        if time.monotonic() - time_start >= timeout:
             if isinstance(res, Exception):
                 raise res
             raise TimeOutError()
         time.sleep(timeout_interval)
-        elapsed += timeout_interval
 
 
 def is_exe(fpath):
