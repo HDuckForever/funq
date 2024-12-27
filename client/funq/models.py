@@ -78,6 +78,7 @@ class TreeItems(BaseItems, item_class=TreeItem):
         decoded json.
         """
         self.client = client
+        print(self.__dict__)
         self.items = [self._item_class(client, v) for v in data['items']]
 
     def iter(self):
@@ -884,13 +885,9 @@ class ComboBox(Widget, cpp_class='QComboBox'):
                             f' - got {type(text)}')
         column = self.properties()['modelColumn']
         index = -1
-        # WORKAROUND: Call items() via function pointer to prevent py2to3 from
-        # performing an illegal conversion which doesn't work on Python 3. This
-        # should be removed once we have "real" Python 3 compatibility.
-        items_func = AbstractItemModel.items
-        for item in items_func(self.model()).iter():
-            if column == int(item.column) and item.value == text:
-                index = int(item.row)
+        for item in self.model().items():
+            if column == item.column and item.value == text:
+                index = item.row
                 break
         assert index > -1, (f"The text `{text}` is not in the combobox `{self.path}`")
         self.set_property('currentIndex', index)
