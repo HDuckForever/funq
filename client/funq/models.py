@@ -152,6 +152,41 @@ class Object(metaclass=WidgetMetaClass):
     client = None
     path = None
 
+    class Properties():
+        def __init__(self, obj):
+            self.obj = obj
+
+        def __call__(self):
+            """
+            Returns a dict of availables properties for this object with associated
+            values.
+
+            Example::
+
+              enabled = object.properties()["enabled"]
+            """
+            return self.obj.client.send_command('object_properties', oid=self.obj.oid)
+
+        def __getitem__(self, item):
+            """
+            Get one property from object.
+
+            Example::
+
+              value = object.property['text']
+            """
+            return self()[item]
+
+        def __setitem__(self, item, value):
+            """
+            Define one property on object.
+
+            Example::
+
+              object.property['text'] = "My beautiful text"
+            """
+            self.obj.set_properties(**{item: value})
+
     def __init__(self, client, data):
         """
         Allow to create an Object or a subclass given data coming from
@@ -160,17 +195,7 @@ class Object(metaclass=WidgetMetaClass):
         for k, v in data.items():
             setattr(self, k, v)
         self.client = client
-
-    def properties(self):
-        """
-        Returns a dict of availables properties for this object with associated
-        values.
-
-        Example::
-
-          enabled = object.properties()["enabled"]
-        """
-        return self.client.send_command('object_properties', oid=self.oid)
+        self.property = self.properties = self.Properties(self)
 
     def set_properties(self, **properties):
         """
