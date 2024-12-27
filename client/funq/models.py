@@ -78,7 +78,6 @@ class TreeItems(BaseItems, item_class=TreeItem):
         decoded json.
         """
         self.client = client
-        print(self.__dict__)
         self.items = [self._item_class(client, v) for v in data['items']]
 
     def iter(self):
