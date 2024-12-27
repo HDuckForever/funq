@@ -55,7 +55,6 @@ def set_gkit_aliases(funqaliases, gkit_file, gkit):
 
 
 class HooqAliases(dict):
-
     """
     A specialized dict for aliases.
     """
@@ -64,7 +63,6 @@ class HooqAliases(dict):
         if name in self:
             raise HooqAliasesKeyError(f"The alias `{name}` already exists.")
         try:
-            # pylint: disable=W0142
             value = value.format(**self)
         except KeyError as msg:
             raise HooqAliasesKeyError("Impossible substitution in"
@@ -92,12 +90,12 @@ class HooqAliases(dict):
                 num_line += 1
                 if not line or line.startswith('#'):
                     continue
-                else:
-                    try:
-                        key, value = line.split('=', 1)
-                    except ValueError:
-                        raise HooqAliasesInvalidLineError(
-                            f"The alias file `{path}` contains a"
-                            f" syntax error on line {num_line}.")
-                self[key.strip()] = value.strip()
+
+                try:
+                    key, value = line.split('=', 1)
+                except ValueError:
+                    raise HooqAliasesInvalidLineError(
+                        f"The alias file `{path}` contains a"
+                        f" syntax error on line {num_line}.")
+            self[key.strip()] = value.strip()
         return self

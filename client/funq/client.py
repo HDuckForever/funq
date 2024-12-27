@@ -56,7 +56,6 @@ LOG = logging.getLogger('funq.client')
 
 
 class FunqClient():
-
     """
     Allow to communicate with a libFunq server.
 
@@ -371,7 +370,6 @@ class FunqClient():
 
 
 class ApplicationContext():  # pylint: disable=R0903
-
     """
     This is the context of a tested application.
 
@@ -517,8 +515,7 @@ class ApplicationContext():  # pylint: disable=R0903
         self.terminate()
 
 
-class ApplicationConfig():  # pylint: disable=R0902
-
+class ApplicationConfig():
     """
     This object hold the configuration of the application to test, mostly
     retrieved from the funq configuration file.
@@ -652,7 +649,6 @@ class ApplicationConfig():  # pylint: disable=R0902
 
 
 class ApplicationRegistry():
-
     """
     Handle multiple :class:`ApplicationConfig`. A global instance is
     used in :mod:`funq.noseplugin` to keep every configuration defined

@@ -76,7 +76,7 @@ class FunqPlugin(Plugin):
 
     def options(self, parser, env=None):
         env = env or os.environ
-        super(FunqPlugin, self).options(parser, env=env)
+        super().options(parser, env=env)
         parser.add_option('--funq-conf',
                           dest='funq_conf',
                           default=env.get('NOSE_FUNQ_CONF') or 'funq.conf',

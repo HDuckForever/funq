@@ -38,7 +38,6 @@ Defines error classes used in funq.
 
 
 class FunqError(Exception):
-
     """
     Exception thrown when the libFunq server send back an error.
 
@@ -55,22 +54,17 @@ class FunqError(Exception):
 
 
 class TimeOutError(Exception):
-
     """Raised on timeout"""
 
 
 class HooqAliasesInvalidLineError(Exception):
-
     """
     Raised when an error occured during the parsing of the aliases file.
     """
-    pass
 
 
 class HooqAliasesKeyError(KeyError):
-
     """
     Raised when two aliases or more have the same name, or when an alias is
     not defined.
     """
-    pass

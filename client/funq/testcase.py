@@ -46,7 +46,6 @@ import inspect
 
 
 class AssertionSuccessError(AssertionError):
-
     """
     Exception which will be raised if method decorated with :func:`todo`
     pass (it is not expected).
@@ -55,7 +54,7 @@ class AssertionSuccessError(AssertionError):
     """
 
     def __init__(self, name):
-        super(AssertionSuccessError, self).__init__()
+        super().__init__()
         self.name = name
 
     def __str__(self):
@@ -181,19 +180,18 @@ def wraps_parameterized(func, func_suffix, args, kwargs):
 
 
 class MetaParameterized(type):
-
     """
     A metaclass that allow a class to use decorators like :func:`parameterized`
     or :func:`with_parameters` to generate new methods.
     """
     RE_ESCAPE_BAD_CHARS = re.compile(r'[\.\(\) -/]')
 
-    def __new__(cls, name, bases, attrs):
+    def __new__(mcs, name, bases, attrs):
         for k in list(attrs.keys()):
             v = attrs[k]
             if callable(v) and hasattr(v, 'parameters'):
                 for func_suffix, args, kwargs in v.parameters:
-                    func_suffix = cls.RE_ESCAPE_BAD_CHARS.sub('_', func_suffix)
+                    func_suffix = mcs.RE_ESCAPE_BAD_CHARS.sub('_', func_suffix)
                     wrapper = wraps_parameterized(v, func_suffix, args, kwargs)
                     if wrapper.__name__ in attrs:
                         raise KeyError(f"{wrapper.__name__} is already a defined"
@@ -201,18 +199,17 @@ class MetaParameterized(type):
                     attrs[wrapper.__name__] = wrapper
                 del attrs[k]
 
-        return type.__new__(cls, name, bases, attrs)
+        return super().__new__(mcs, name, bases, attrs)
 
 
 class declared_attr(property):
-
     """
     Allow to write a class method that will be accessible as a class
     attribute.
     """
 
     def __init__(self, fget, *arg, **kw):
-        super(declared_attr, self).__init__(fget, *arg, **kw)
+        super().__init__(fget, *arg, **kw)
         self.__doc__ = fget.__doc__
 
     def __get__(desc, self, cls):  # pylint: disable=E0213
@@ -235,7 +232,6 @@ def register_funq_app_registry(registry):
 
 
 class BaseTestCase(unittest.TestCase, metaclass=MetaParameterized):
-
     """
     Abstract class of a testcase for Funq.
 
@@ -270,7 +266,6 @@ class BaseTestCase(unittest.TestCase, metaclass=MetaParameterized):
 
 
 class FunqTestCase(BaseTestCase):
-
     """
     A testcase to launch an application and write tests against it.
 
@@ -297,7 +292,6 @@ class FunqTestCase(BaseTestCase):
 
 
 class MultiFunqTestCase(BaseTestCase):
-
     """
     A testcase to launch multiple applications at the same time and write tests
     against them.

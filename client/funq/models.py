@@ -42,7 +42,6 @@ import base64
 
 
 class TreeItem():  # pylint: disable=R0903
-
     """
     Defines an abstract item that contains subitems
     """
@@ -59,6 +58,7 @@ class TreeItem():  # pylint: disable=R0903
 
 
 class BaseItems():
+    """ Class to handle 'item_class' argument for derived subclasses """
 
     def __init_subclass__(cls, /, item_class, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -66,7 +66,6 @@ class BaseItems():
 
 
 class TreeItems(BaseItems, item_class=TreeItem):
-
     """
     Abstract class to manipulate data that contains :class:`TreeItem`. Used
     by modelitems and graphicsitems.
@@ -112,7 +111,6 @@ class TreeItems(BaseItems, item_class=TreeItem):
 
 
 class WidgetMetaClass(type):
-
     """
     Saves a dict of accessible classes to handle inheritance of Widgets.
     """
@@ -134,7 +132,6 @@ class WidgetMetaClass(type):
 
 
 class Object(metaclass=WidgetMetaClass):
-
     """
     Allow to manipulate a QObject or derived.
 
@@ -280,7 +277,6 @@ class Object(metaclass=WidgetMetaClass):
 
 
 class Action(Object):
-
     """
     Allow to manipulate a QAction or derived.
     """
@@ -302,7 +298,6 @@ class Action(Object):
 
 
 class AbstractItemModel(Object):
-
     """
     Allow to manipulate a QAbstractItemModel or derived.
     """
@@ -317,7 +312,6 @@ class AbstractItemModel(Object):
 
 
 class Widget(Object):
-
     """
     Allow to manipulate a QWidget or derived.
     """
@@ -438,14 +432,14 @@ class Widget(Object):
         """
         self.client.send_command('widget_close', oid=self.oid)
 
-    def grab(self, format="PNG"):
+    def grab(self, format_="PNG"):
         """
         Save the widgets content as an image.
 
         :param string format: The format of the grabbed image.
         :return: The image as a binary blob in the given format.
         """
-        data = self.client.send_command('grab', format=format, oid=self.oid)
+        data = self.client.send_command('grab', format=format_, oid=self.oid)
         return base64.standard_b64decode(data['data'])
 
     def map_position_from(self, x, y, parent):
@@ -489,7 +483,6 @@ class Widget(Object):
 
 
 class ModelItem(TreeItem):
-
     """
     Allow to manipulate a modelitem in a QAbstractItemModel or derived.
 
@@ -518,7 +511,6 @@ class ModelItem(TreeItem):
 
 
 class ModelItems(TreeItems, item_class=ModelItem):
-
     """
     Allow to manipulate all modelitems in a QAbstractItemModel or derived.
 
@@ -587,7 +579,6 @@ class ModelItems(TreeItems, item_class=ModelItem):
 
 
 class AbstractItemView(Widget, cpp_class='QAbstractItemView'):
-
     """
     Specific Widget to manipulate QAbstractItemView or derived.
     """
@@ -708,7 +699,6 @@ class AbstractItemView(Widget, cpp_class='QAbstractItemView'):
 
 
 class TableView(AbstractItemView, cpp_class='QTableView'):
-
     """
     Specific widget to manipulate a QTableView widget.
     """
@@ -749,7 +739,6 @@ class TableView(AbstractItemView, cpp_class='QTableView'):
 
 
 class TreeView(AbstractItemView, cpp_class='QTreeView'):
-
     """
     Specific widget to manipulate a QTreeView widget.
     """
@@ -770,7 +759,6 @@ class TreeView(AbstractItemView, cpp_class='QTreeView'):
 
 
 class TabBar(Widget, cpp_class="QTabBar"):
-
     """
     Allow to manipulate a QTabBar Widget.
     """
@@ -797,7 +785,6 @@ class TabBar(Widget, cpp_class="QTabBar"):
 
 
 class GItem(TreeItem):
-
     """
     Allow to manipulate a QGraphicsItem.
 
@@ -867,7 +854,6 @@ class GItems(TreeItems, item_class=GItem):
 
 
 class GraphicsView(Widget, cpp_class='QGraphicsView'):
-
     """
     Allow to manipulate an instance of QGraphicsView.
     """
@@ -910,7 +896,6 @@ class GraphicsView(Widget, cpp_class='QGraphicsView'):
 
 
 class ComboBox(Widget, cpp_class='QComboBox'):
-
     """
     Allow to manipulate a QCombobox.
     """
@@ -941,7 +926,6 @@ class ComboBox(Widget, cpp_class='QComboBox'):
 
 
 class HeaderView(Widget, cpp_class='QHeaderView'):
-
     """
     Allow to manipulate a QHeaderView.
     """
