@@ -153,7 +153,7 @@ class Object(metaclass=WidgetMetaClass):
 
     class Properties():
         def __init__(self, obj):
-            self.obj = obj
+            super().__setattr__(f'_{self.__class__.__name__}__obj', obj)
 
         def __call__(self):
             """
@@ -164,7 +164,10 @@ class Object(metaclass=WidgetMetaClass):
 
               enabled = object.properties()["enabled"]
             """
-            return self.obj.client.send_command('object_properties', oid=self.obj.oid)
+            return self.__obj.client.send_command('object_properties', oid=self.__obj.oid)
+
+        def __contains__(self, item):
+            return item in self()
 
         def __getitem__(self, item):
             """
@@ -184,7 +187,27 @@ class Object(metaclass=WidgetMetaClass):
 
               object.property['text'] = "My beautiful text"
             """
-            self.obj.set_properties(**{item: value})
+            self.__obj.set_properties(**{item: value})
+
+        def __getattr__(self, item):
+            """
+            Get value of one property from object.
+
+            Example::
+
+              value = object.property.text
+            """
+            return self()[item]
+
+        def __setattr__(self, item, value):
+            """
+            Define one property on object.
+
+            Example::
+
+              object.property.text = "My beautiful text"
+            """
+            self.__obj.set_properties(**{item: value})
 
     def __init__(self, client, data):
         """
