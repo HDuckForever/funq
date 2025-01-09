@@ -147,8 +147,8 @@ class FunqClient():
         header = f.readline()
         if not header:
             raise FunqError("NoResponseFromApplication",
-                            "Pas de réponse de l'application testée -"
-                            " probablement un crash.")
+                            "No response from the tested application"
+                            " - probably a crash.")
         to_read = int(header)
         response = json.loads(f.read(to_read).decode('utf-8'))
         if response.get('success') is False:
