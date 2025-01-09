@@ -294,12 +294,13 @@ class FunqClient():
             widget.wait_for_properties(props)
         return widget
 
-    def widgets_list(self, with_properties=False):
+    def widgets_list(self, with_properties=False, recursive=True):
         """
         Returns a dict with every widgets in the application.
         """
         return self.send_command('widgets_list',
-                                 with_properties=with_properties)
+                                 with_properties=with_properties,
+                                 recursive=recursive)
 
     def dump_widgets_list(self, stream='widgets_list.json',
                           with_properties=False):

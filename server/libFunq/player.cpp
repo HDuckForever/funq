@@ -441,13 +441,13 @@ void Player::_object_set_properties(QObject * object,
 }
 
 void recursive_list_widget(QWidget * widget, QtJson::JsonObject & out,
-                           bool with_properties) {
+                           bool with_properties, bool recursive) {
     QtJson::JsonObject resultWidgets, resultWidget;
     dump_object(widget, resultWidget, with_properties);
     foreach (QObject * obj, widget->children()) {
         QWidget * subWidget = qobject_cast<QWidget *>(obj);
-        if (subWidget) {
-            recursive_list_widget(subWidget, resultWidgets, with_properties);
+        if (recursive && subWidget) {
+            recursive_list_widget(subWidget, resultWidgets, with_properties, recursive);
         }
     }
     resultWidget["children"] = resultWidgets;
@@ -456,6 +456,7 @@ void recursive_list_widget(QWidget * widget, QtJson::JsonObject & out,
 
 QtJson::JsonObject Player::widgets_list(const QtJson::JsonObject & command) {
     bool with_properties = command["with_properties"].toBool();
+    bool recursive = command["recursive"].toBool();
     QtJson::JsonObject result;
     if (command.contains("oid")) {
         ObjectLocatorContext ctx(this, command, "oid");
@@ -465,14 +466,14 @@ QtJson::JsonObject Player::widgets_list(const QtJson::JsonObject & command) {
         foreach (QObject * obj, ctx.obj->children()) {
             QWidget * subWidget = qobject_cast<QWidget *>(obj);
             if (subWidget) {
-                recursive_list_widget(subWidget, result, with_properties);
+                recursive_list_widget(subWidget, result, with_properties, recursive);
             }
         }
     } else {
         QList<QWidget *> widgets = QApplication::topLevelWidgets();
         if (!widgets.isEmpty()) {
             foreach (QWidget * widget, widgets) {
-                recursive_list_widget(widget, result, with_properties);
+                recursive_list_widget(widget, result, with_properties, recursive);
             }
         } else {
             // no qwidgets, this is probably a qtquick app - anyway, check for

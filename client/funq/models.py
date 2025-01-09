@@ -481,6 +481,15 @@ class Widget(Object):
                                             direction='to', x=x, y=y)
         return response['x'], response['y']
 
+    def widgets_list(self, with_properties=False, recursive=True):
+        """
+        Returns a dict with children or every sub-widgets of the widget.
+        """
+        return self.client.send_command('widgets_list',
+                                        oid=self.oid,
+                                        with_properties=with_properties,
+                                        recursive=recursive)
+
 
 class ModelItem(TreeItem):
     """
