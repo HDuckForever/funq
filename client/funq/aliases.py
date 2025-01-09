@@ -97,5 +97,5 @@ class HooqAliases(dict):
                     raise HooqAliasesInvalidLineError(
                         f"The alias file `{path}` contains a"
                         f" syntax error on line {num_line}.")
-            self[key.strip()] = value.strip()
+                self[key.strip()] = value.strip()
         return self
