@@ -267,7 +267,7 @@ void Player::objectDeleted(QObject * object) {
     m_registeredObjects.remove(id);
 }
 
-QtJson::JsonObject Player::list_actions(const QtJson::JsonObject &) {
+QtJson::JsonObject Player::list_commands(const QtJson::JsonObject &) {
     const QMetaObject * metaObject = this->metaObject();
     QStringList methods;
     for (int i = metaObject->methodOffset(); i < metaObject->methodCount();

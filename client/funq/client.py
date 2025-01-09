@@ -294,6 +294,12 @@ class FunqClient():
             widget.wait_for_properties(props)
         return widget
 
+    def _list_commands(self):
+        """
+        Returns a dict with available commands.
+        """
+        return self.send_command('list_commands')
+
     def widgets_list(self, with_properties=False, recursive=True):
         """
         Returns a dict with every widgets in the application.

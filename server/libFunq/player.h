@@ -73,7 +73,7 @@ public slots:
      * second signature allows to create non blocking answers.
      *
      */
-    QtJson::JsonObject list_actions(const QtJson::JsonObject & command);
+    QtJson::JsonObject list_commands(const QtJson::JsonObject & command);
 
     QtJson::JsonObject widget_by_path(const QtJson::JsonObject & command);
     QtJson::JsonObject active_widget(const QtJson::JsonObject & command);
