@@ -300,6 +300,13 @@ class FunqClient():
         """
         return self.send_command('list_commands')
 
+    def actions_list(self, with_properties=False):
+        """
+        Returns a dict with every actions in the application.
+        """
+        return self.send_command('actions_list',
+                                 with_properties=with_properties)
+
     def widgets_list(self, with_properties=False, recursive=True):
         """
         Returns a dict with every widgets in the application.

@@ -496,6 +496,35 @@ QtJson::JsonObject Player::quit(const QtJson::JsonObject &) {
     return result;
 }
 
+QtJson::JsonObject Player::actions_list(const QtJson::JsonObject & command) {
+    bool with_properties = command["with_properties"].toBool();
+    QtJson::JsonObject result, resultAction;
+    QList<QAction *> actions;
+    if (command.contains("oid")) {
+        ObjectLocatorContext ctx(this, command, "oid");
+        if (ctx.hasError()) {
+            return ctx.lastError;
+        }
+        foreach (QObject * obj, ctx.obj->children()) {
+            actions += obj->findChildren<QAction *>();
+        }
+    } else {
+        QList<QWidget *> widgets = QApplication::topLevelWidgets();
+        if (!widgets.isEmpty()) {
+            foreach (QWidget * widget, widgets) {
+                actions += widget->findChildren<QAction *>();
+            }
+        }
+    }
+
+    foreach (QAction * action, actions) {
+        dump_object(action, resultAction, with_properties);
+        result[ObjectPath::objectName(action)] = resultAction;
+    }
+
+    return result;
+}
+
 QtJson::JsonObject Player::action_trigger(const QtJson::JsonObject & command) {
     WidgetLocatorContext<QAction> ctx(this, command, "oid");
     if (ctx.hasError()) {
