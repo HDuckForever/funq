@@ -760,7 +760,8 @@ QtJson::JsonObject Player::model_item_action(
 
     QPoint cursorPosition;
 
-    if (itemaction == "click" || itemaction == "doubleclick") {
+    if (itemaction == "click" || itemaction == "rightclick" || itemaction == "middleclick" 
+    || itemaction == "doubleclick") {
         QString origin = command["origin"].toString();
         int offsetX = command["offset_x"].toInt();
         int offsetY = command["offset_y"].toInt();
