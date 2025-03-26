@@ -95,6 +95,10 @@ void activate_focus(QWidget * w) {
     w->setFocus(Qt::MouseFocusReason);
 }
 
+void open_context_menu(QWidget * w, const QPoint & pos) {
+    w->customContextMenuRequested(pos);
+}
+
 void dump_properties(QObject * object, QtJson::JsonObject & out) {
     const QMetaObject * metaobject = object->metaObject();
     for (int i = 0; i < metaobject->propertyCount(); ++i) {
@@ -761,7 +765,8 @@ QtJson::JsonObject Player::model_item_action(
     QPoint cursorPosition;
 
     if (itemaction == "click" || itemaction == "rightclick" || itemaction == "middleclick" 
-    || itemaction == "doubleclick") {
+    || itemaction == "doubleclick" 
+    || itemaction == "context_menu") {
         QString origin = command["origin"].toString();
         int offsetX = command["offset_x"].toInt();
         int offsetY = command["offset_y"].toInt();
@@ -802,6 +807,8 @@ QtJson::JsonObject Player::model_item_action(
         mouse_click(ctx.widget->viewport(), cursorPosition, Qt::MiddleButton);
     } else if (itemaction == "doubleclick") {
         mouse_dclick(ctx.widget->viewport(), cursorPosition);
+    } else if (itemaction == "context_menu") {
+        open_context_menu(ctx.widget, cursorPosition);
     } else {
         return createError(
             "MissingItemAction",

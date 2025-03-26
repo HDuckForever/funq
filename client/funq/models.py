@@ -622,6 +622,15 @@ class AbstractItemView(Widget, cpp_class='QAbstractItemView'):
                                  offset_y=offset_y,
                                  itempath=item.itempath)
 
+    def open_context_menu_item(self, item):
+        """
+        Open context menu for the specified item.
+
+        :param ModelItem item: The item which context menu need to open (object retrieved from
+                               (:meth:`model`)).
+        """
+        self._item_action(item, "context_menu")
+
     def select_item(self, item):
         """
         Select the specified item.
