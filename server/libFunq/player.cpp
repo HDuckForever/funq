@@ -509,9 +509,10 @@ QtJson::JsonObject Player::actions_list(const QtJson::JsonObject & command) {
         if (ctx.hasError()) {
             return ctx.lastError;
         }
-        foreach (QObject * obj, ctx.obj->children()) {
-            actions += obj->findChildren<QAction *>();
-        }
+        // foreach (QObject * obj, ctx.obj->children()) {
+        //     actions += obj->findChildren<QAction *>();
+        // }
+        actions += ctx.obj->findChildren<QAction *>();
     } else {
         QList<QWidget *> widgets = QApplication::topLevelWidgets();
         if (!widgets.isEmpty()) {
