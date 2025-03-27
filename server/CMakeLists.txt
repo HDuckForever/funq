@@ -54,7 +54,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set common compile options
-add_compile_options(-Wall -Wextra -Wpedantic)
+if(CMAKE_COMPILER_IS_GNUCXX)
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
 if(BUILD_DISALLOW_WARNINGS)
   message(STATUS "Building with -Werror")
   add_compile_options(-Werror)
