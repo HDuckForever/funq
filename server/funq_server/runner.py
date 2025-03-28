@@ -37,7 +37,7 @@ import sys
 import subprocess
 import platform
 import argparse
-import funq_server
+# import funq_server
 
 
 class RunnerInjector():
@@ -67,8 +67,8 @@ class Runner():
     def _parse_args(self, argv=None):
         desc = """Start a QT application with a libFunq server injected."""
         parser = argparse.ArgumentParser(description=desc)
-        parser.add_argument('-v', '--version', action='version',
-                            version=funq_server.__version__)
+        # parser.add_argument('-v', '--version', action='version',
+        #                     version=funq_server.__version__)
         parser.add_argument('--pick', action='store_true',
                             help="Use PICK MODE, to find widget's paths")
         parser.add_argument('--host', type=str,
@@ -90,11 +90,11 @@ class Runner():
 
     def _create_injector_class(self):
         if self.system == 'Windows':
-            from funq_server.runner_win import WindowsRunnerInjector as RI
+            from runner_win import WindowsRunnerInjector as RI
         elif self.system == 'Darwin':
-            from funq_server.runner_mac import MacRunnerInjector as RI
+            from runner_mac import MacRunnerInjector as RI
         else:
-            from funq_server.runner_linux import LinuxRunnerInjector as RI
+            from runner_linux import LinuxRunnerInjector as RI
         return RI
 
     def run(self, argv=None):

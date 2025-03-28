@@ -32,7 +32,7 @@
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL v2.1 license and that you accept its terms.
 
-from funq_server.runner import RunnerInjector
+from runner import RunnerInjector
 from ctypes import wintypes, byref
 import ctypes
 import time
